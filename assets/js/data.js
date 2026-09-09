@@ -1,47 +1,116 @@
-/* 慧邦生物 · 产品数据
- * 内容来自公司画册目录（第 3 页）与产品详情页。
- * 新增/修改产品：直接编辑本文件即可，目录页与详情页会自动更新。
+/* 慧邦生物 · 网站默认内容
+ * 这是网站的"出厂内容"。部署后台后，管理员在 /admin.html 修改的内容会保存到
+ * Cloudflare KV，前台优先读取后台内容；后台不可用时自动回退到本文件。
+ * 因此本文件不需要手工维护 —— 改内容请用后台。
  */
 
-const COMPANY = {
-  factory: '巨野县韦恩生物科技有限公司',
-  service: '山东慧邦生物科技有限公司',
-  brand: 'HUIBANG 慧邦生物',
-  slogan: '灭生性除草剂专业厂家的先行者',
-  motto: '不忘初心 · 砥砺前行',
-  address: '山东省菏泽市巨野县化工产业园',
-  phone: '',
-  email: ''
-};
+var DEFAULT_SITE = {
 
-/* 公司证件 */
-const CERTS = {
-  current: [
-    '19.5% 二甲·草铵膦可溶液剂',
-    '41% 草甘膦异丙胺盐水剂',
-    '95% 草甘膦原药',
-    '5% 阿维菌素乳油',
-    '8000IU/微升 苏云金杆菌悬浮剂',
-    '10% 吡虫啉可湿性粉剂',
-    '40% 丙溴磷乳油',
-    '25克/升 联苯菊酯乳油'
+  /* 公司信息（页脚、联系页共用） */
+  company: {
+    factory: '巨野县韦恩生物科技有限公司',
+    service: '山东慧邦生物科技有限公司',
+    slogan: '灭生性除草剂专业厂家的先行者',
+    address: '山东省菏泽市巨野县化工产业园',
+    phone: '',
+    email: ''
+  },
+
+  /* 首页 */
+  home: {
+    tag: 'HUIBANG BIO-TECH',
+    title: '灭生性除草剂专业厂家的先行者',
+    subtitle: '巨野县韦恩生物科技有限公司 · 山东慧邦生物科技有限公司',
+    lead: '国家农业部核准的高科技生物环保型农药定点企业，集农药研发、生产、销售于一体，专注高效杀虫剂、杀螨剂、除草剂、杀菌剂、生长调节剂。',
+    heroImage: 'assets/img/cover.webp',
+    stats: [
+      { n: '100+', label: '企业员工' },
+      { n: '10+', label: '高级科研技术人员' },
+      { n: '86', label: '在册产品' },
+      { n: '15', label: '农药登记证件' }
+    ],
+    bannerImage: 'assets/img/spirit.webp',
+    bannerTitle: '不忘初心　砥砺前行',
+    bannerText: '以"产品质量为生命，人才建设为主线"的发展原则，与各界朋友携手共进、共创辉煌。'
+  },
+
+  /* 企业介绍 */
+  about: {
+    image: 'assets/img/about.webp',
+    imageCaption: '企业画册 · 企业介绍页',
+    sections: [
+      {
+        title: '关于我们',
+        paragraphs: [
+          '<strong>巨野县韦恩生物科技有限公司</strong>是国家农业部核准的高科技生物环保型农药定点企业，专业从事农药研发、生产和销售于一体的现代化科技企业，生产基地位于山东省菏泽市巨野县化工产业园。<strong>山东慧邦生物科技有限公司</strong>是专业病虫草害技术推广及销售于一体的科技服务公司。',
+          '工厂拥有完备的自动化加工、分装、检验设备和制剂研发团队及市场推广队伍，专注于高效杀虫剂、杀螨剂、除草剂、杀菌剂、生长调节剂等产品的生产和销售。',
+          '公司拥有员工 100 多人，其中专业化的高级科研技术人员 10 余名。高素质的营销团队、科学高效的管理模式、营销网络遍布全国。产品以优异的质量，先进的技术服务模式受到广大经销商和农民朋友的欢迎。'
+        ]
+      },
+      {
+        title: '发展理念',
+        paragraphs: [
+          '我们秉承"着眼未来、以人为本，技术先行"的发展战略，坚持"质量第一、信誉第一、服务第一、用户第一"的信念，以市场为导向为企业定位，成为"中国食品和农产品安全源头"的捍卫者。我们满怀信心，愿与各界朋友携手共进、共创辉煌。'
+        ]
+      }
+    ],
+    values: [
+      { k: '核心价值观', v: '责任 · 创新 · 品牌 · 未来' },
+      { k: '发展使命', v: '关爱健康，造福子孙' },
+      { k: '经营理念', v: '发展绿色，倡导有机' },
+      { k: '服务宗旨', v: '合作共赢，共同成长' }
+    ]
+  },
+
+  /* 公司证件 */
+  certs: {
+    image: 'assets/img/certs.webp',
+    imageCaption: '企业画册 · 公司证件页',
+    current: [
+      '19.5% 二甲·草铵膦可溶液剂',
+      '41% 草甘膦异丙胺盐水剂',
+      '95% 草甘膦原药',
+      '5% 阿维菌素乳油',
+      '8000IU/微升 苏云金杆菌悬浮剂',
+      '10% 吡虫啉可湿性粉剂',
+      '40% 丙溴磷乳油',
+      '25克/升 联苯菊酯乳油'
+    ],
+    registered: [
+      '8% 甲维盐可溶液剂',
+      '12% 甲维·唑虫悬浮剂',
+      '45% 联苯肼酯·乙螨唑悬浮剂',
+      '25% 敌草快二氯可溶液剂',
+      '25% 丙炔·精草铵膦可溶液剂',
+      '30% 噻唑膦水乳剂',
+      '16.8% 甲维·虫螨腈悬浮剂'
+    ]
+  },
+
+  /* 企业画册 */
+  brochure: [
+    { src: 'assets/img/cover.webp', title: '封面' },
+    { src: 'assets/img/about.webp', title: '企业介绍' },
+    { src: 'assets/img/certs.webp', title: '公司证件' },
+    { src: 'assets/img/spirit.webp', title: '不忘初心 砥砺前行' },
+    { src: 'assets/img/catalog.webp', title: '产品目录（P3）' },
+    { src: 'assets/img/p-zhuganji.webp', title: '注干剂产品（P4）' },
+    { src: 'assets/img/p-zhuganji2.webp', title: '解除者 / 注干青（P5）' },
+    { src: 'assets/img/p-newreg.webp', title: '新登记产品（P6）' }
   ],
-  registered: [
-    '8% 甲维盐可溶液剂',
-    '12% 甲维·唑虫悬浮剂',
-    '45% 联苯肼酯·乙螨唑悬浮剂',
-    '25% 敌草快二氯可溶液剂',
-    '25% 丙炔·精草铵膦可溶液剂',
-    '30% 噻唑膦水乳剂',
-    '16.8% 甲维·虫螨腈悬浮剂'
-  ]
-};
 
-/* 产品目录：按画册分类组织
- * item: { name, spec, page, detail? }
- * detail 存在时，详情页展示完整介绍；否则展示基础信息 + 咨询入口
- */
-const CATALOG = [
+  /* 联系我们 */
+  contact: {
+    cards: [
+      { icon: '🏭', title: '生产企业', line1: '巨野县韦恩生物科技有限公司', line2: '国家农业部核准的高科技生物<br>环保型农药定点企业' },
+      { icon: '🤝', title: '技术推广与销售', line1: '山东慧邦生物科技有限公司', line2: '病虫草害技术推广<br>及销售科技服务公司' },
+      { icon: '📍', title: '生产基地', line1: '山东省菏泽市巨野县化工产业园', line2: '营销网络遍布全国' }
+    ]
+  },
+
+  /* 产品目录 */
+  catalog:
+[
   {
     id: 'zhuganji',
     name: '注干剂产品',
@@ -264,23 +333,34 @@ const CATALOG = [
       { name: '磷酸二氢钾', spec: '植物源', page: '61' }
     ]
   }
-];
+]
+};
 
-/* 为每个产品生成稳定 id，供详情页 ?id= 使用 */
-CATALOG.forEach(function (cat) {
-  cat.items.forEach(function (item, i) {
-    item.id = cat.id + '-' + (i + 1);
-    item.category = cat.name;
-    item.categoryId = cat.id;
+/* ---------- 运行期 ---------- */
+/* SITE 由 site.js 注入：后台内容优先，后台不可用时保持默认内容 */
+var SITE = DEFAULT_SITE;
+
+/* 为每个产品生成稳定 id：分类id-序号 */
+function indexCatalog(catalog) {
+  (catalog || []).forEach(function (cat) {
+    (cat.items || []).forEach(function (item, i) {
+      item.id = cat.id + '-' + (i + 1);
+      item.category = cat.name;
+      item.categoryId = cat.id;
+    });
   });
-});
+  return catalog;
+}
 
 function findProduct(id) {
-  for (var i = 0; i < CATALOG.length; i++) {
-    var items = CATALOG[i].items;
+  var cats = (typeof SITE !== 'undefined' && SITE.catalog) || [];
+  for (var i = 0; i < cats.length; i++) {
+    var items = cats[i].items || [];
     for (var j = 0; j < items.length; j++) {
       if (items[j].id === id) return items[j];
     }
   }
   return null;
 }
+
+indexCatalog(DEFAULT_SITE.catalog);

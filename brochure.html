@@ -9,28 +9,23 @@
 <body data-page="brochure">
 <div id="site-nav"></div>
 <section class="page-hero"><div class="wrap">
-  <div class="en">Brochure</div>
-  <h1>企业画册</h1>
-  <p>点击任意页面查看大图</p>
+  <div class="en">Brochure</div><h1>企业画册</h1><p>点击任意页面查看大图</p>
 </div></section>
-<div class="wrap">
-  <div class="crumb"><a href="index.html">首页</a> / 企业画册</div>
-</div>
+<div class="wrap"><div class="crumb"><a href="index.html">首页</a> / 企业画册</div></div>
 <section class="sec" style="padding-top:20px"><div class="wrap">
-  <div class="gallery">
-    <a href="assets/img/cover.webp" target="_blank"><img src="assets/img/cover.webp" alt="封面"><span>封面</span></a>
-    <a href="assets/img/about.webp" target="_blank"><img src="assets/img/about.webp" alt="企业介绍"><span>企业介绍</span></a>
-    <a href="assets/img/certs.webp" target="_blank"><img src="assets/img/certs.webp" alt="公司证件"><span>公司证件</span></a>
-    <a href="assets/img/spirit.webp" target="_blank"><img src="assets/img/spirit.webp" alt="不忘初心 砥砺前行"><span>不忘初心 砥砺前行</span></a>
-    <a href="assets/img/catalog.webp" target="_blank"><img src="assets/img/catalog.webp" alt="产品目录"><span>产品目录（P3）</span></a>
-    <a href="assets/img/p-zhuganji.webp" target="_blank"><img src="assets/img/p-zhuganji.webp" alt="注干剂产品"><span>注干剂产品（P4）</span></a>
-    <a href="assets/img/p-zhuganji2.webp" target="_blank"><img src="assets/img/p-zhuganji2.webp" alt="解除者 · 注干青"><span>解除者 / 注干青（P5）</span></a>
-    <a href="assets/img/p-newreg.webp" target="_blank"><img src="assets/img/p-newreg.webp" alt="新登记产品"><span>新登记产品（P6）</span></a>
-  </div>
-  <p class="cert-note">如需补充画册其余页面，将图片放入 <code>assets/img/</code> 并在本页添加一条即可。</p>
+  <div class="gallery" id="gallery"></div>
 </div></section>
 <div id="site-foot"></div>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/main.js"></script>
+<script>
+ready(function () {
+  document.getElementById('gallery').innerHTML = (SITE.brochure || []).map(function (b) {
+    return '<a href="' + esc(b.src) + '" target="_blank" rel="noopener">' +
+      '<img src="' + esc(b.src) + '" alt="' + esc(b.title) + '">' +
+      '<span>' + esc(b.title) + '</span></a>';
+  }).join('') || '<div class="empty">画册内容待添加</div>';
+});
+</script>
 </body>
 </html>

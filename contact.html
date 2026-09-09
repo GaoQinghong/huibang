@@ -9,52 +9,38 @@
 <body data-page="contact">
 <div id="site-nav"></div>
 <section class="page-hero"><div class="wrap">
-  <div class="en">Contact Us</div>
-  <h1>联系我们</h1>
-  <p>合作共赢，共同成长</p>
+  <div class="en">Contact Us</div><h1>联系我们</h1><p>合作共赢，共同成长</p>
 </div></section>
-<div class="wrap">
-  <div class="crumb"><a href="index.html">首页</a> / 联系我们</div>
-</div>
+<div class="wrap"><div class="crumb"><a href="index.html">首页</a> / 联系我们</div></div>
 <section class="sec" style="padding-top:26px"><div class="wrap">
-  <div class="contact-grid">
-    <div class="ccard">
-      <div class="ico">🏭</div>
-      <h4>生产企业</h4>
-      <p>巨野县韦恩生物科技有限公司</p>
-      <p class="muted">国家农业部核准的高科技生物<br>环保型农药定点企业</p>
-    </div>
-    <div class="ccard">
-      <div class="ico">🤝</div>
-      <h4>技术推广与销售</h4>
-      <p>山东慧邦生物科技有限公司</p>
-      <p class="muted">病虫草害技术推广<br>及销售科技服务公司</p>
-    </div>
-    <div class="ccard">
-      <div class="ico">📍</div>
-      <h4>生产基地</h4>
-      <p>山东省菏泽市巨野县化工产业园</p>
-      <p class="muted">营销网络遍布全国</p>
-    </div>
-  </div>
-
+  <div class="contact-grid" id="cards"></div>
   <div class="cert-card" style="margin-top:30px">
     <h3>联系方式</h3>
-    <div id="contact-info"></div>
+    <div id="info"></div>
   </div>
 </div></section>
 <div id="site-foot"></div>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/main.js"></script>
 <script>
-var rows = [];
-if (COMPANY.phone) rows.push('<li><strong>联系电话：</strong>' + COMPANY.phone + '</li>');
-if (COMPANY.email) rows.push('<li><strong>电子邮箱：</strong>' + COMPANY.email + '</li>');
-rows.push('<li><strong>公司地址：</strong>' + COMPANY.address + '</li>');
-document.getElementById('contact-info').innerHTML =
-  '<ul style="list-style:none;margin:0;padding:0">' + rows.join('') + '</ul>' +
-  (COMPANY.phone ? '' : '<div class="todo" style="margin-top:16px">电话、邮箱、微信等联系方式尚未填写。' +
-   '打开 <code>assets/js/data.js</code>，在文件顶部的 <code>COMPANY</code> 中填入 <code>phone</code> 与 <code>email</code>，全站页脚与本页会自动显示。</div>');
+ready(function () {
+  var c = SITE.company || {};
+  document.getElementById('cards').innerHTML = ((SITE.contact || {}).cards || []).map(function (k) {
+    return '<div class="ccard"><div class="ico">' + esc(k.icon) + '</div>' +
+      '<h4>' + esc(k.title) + '</h4><p>' + esc(k.line1) + '</p>' +
+      '<p class="muted">' + (k.line2 || '') + '</p></div>';
+  }).join('');
+
+  var rows = [];
+  if (c.phone) rows.push('<li><strong>联系电话：</strong>' + esc(c.phone) + '</li>');
+  if (c.email) rows.push('<li><strong>电子邮箱：</strong>' + esc(c.email) + '</li>');
+  rows.push('<li><strong>公司地址：</strong>' + esc(c.address) + '</li>');
+
+  document.getElementById('info').innerHTML =
+    '<ul style="list-style:none;margin:0;padding:0">' + rows.join('') + '</ul>' +
+    (c.phone ? '' : '<div class="todo" style="margin-top:16px">联系电话尚未填写。' +
+      '登录后台 <code>/admin.html</code> → 公司信息，即可填写电话与邮箱，全站自动生效。</div>');
+});
 </script>
 </body>
 </html>
