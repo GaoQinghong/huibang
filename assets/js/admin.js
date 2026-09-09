@@ -5,6 +5,7 @@
   var data = null;      // 当前编辑中的内容
   var dirty = false;
   var tab = 'home';
+  var detailItem = null; // 正在编辑详情的产品（为空表示在目录列表页）
 
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) {
@@ -98,6 +99,7 @@
       var b = e.target.closest('button');
       if (!b) return;
       tab = b.getAttribute('data-k');
+      detailItem = null;
       renderSide();
       render();
       window.scrollTo(0, 0);
@@ -195,6 +197,8 @@
 
   function render() {
     var p = $('panel');
+    // 在产品详情编辑页时，列表增删改引发的重绘要停留在详情页
+    if (tab === 'catalog' && detailItem) return renderDetail(p, detailItem);
     if (tab === 'home') return renderHome(p);
     if (tab === 'about') return renderAbout(p);
     if (tab === 'certs') return renderCerts(p);
@@ -390,9 +394,13 @@
       '</div>';
   }
 
-  /* 产品详情编辑（就地展开在面板顶部） */
+  /* 产品详情编辑 */
   function openDetail(item) {
-    var p = $('panel');
+    detailItem = item;
+    render();
+  }
+
+  function renderDetail(p, item) {
     if (!item.features) item.features = [];
     p.innerHTML = '<h2>' + esc(item.name) + '<small>' + esc(item.spec || '') +
         '　· 详情页内容，留空则该产品只显示名称和规格</small></h2>' +
@@ -406,7 +414,7 @@
       stringList(item.features, '一条特点', '添加一条特点', true) +
       field('使用方法 / 注药适期', item, 'usage', { multiline: true }) +
       field('规格包装', item, 'packing', { hint: '例：20毫升*150瓶　30毫升*150瓶' });
-    $('back').onclick = function () { render(); };
+    $('back').onclick = function () { detailItem = null; render(); };
   }
 
   function renderBrochure(p) {
