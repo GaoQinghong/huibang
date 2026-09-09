@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>产品详情 | 慧邦生物</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="catalog">
+<div id="site-nav"></div>
+<div class="wrap">
+  <div class="crumb" id="crumb"><a href="index.html">首页</a> / <a href="catalog.html">产品目录</a></div>
+  <div id="body"></div>
+</div>
+<div class="sibling"><div class="wrap" id="sibling"></div></div>
+<div id="site-foot"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function param(k){
+  var m = new RegExp('[?&]'+k+'=([^&]*)').exec(location.search);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+var p = findProduct(param('id'));
+
+if (!p) {
+  document.getElementById('body').innerHTML =
+    '<div class="empty"><h2>未找到该产品</h2><p style="margin:14px 0 24px">请返回目录重新选择。</p>' +
+    '<a class="btn btn-green" href="catalog.html">返回产品目录</a></div>';
+} else {
+  document.title = p.name + '（' + p.spec + '）| 慧邦生物';
+
+  var cat = CATALOG.filter(function(c){ return c.id === p.categoryId; })[0];
+  var img = p.image || (cat && cat.image) || 'assets/img/cover.webp';
+
+  document.getElementById('crumb').innerHTML =
+    '<a href="index.html">首页</a> / <a href="catalog.html">产品目录</a> / ' +
+    '<a href="catalog.html#'+p.categoryId+'">'+p.category+'</a> / ' + p.name;
+
+  var right = '<span class="cat-tag">'+p.category+'　画册 P'+p.page+'</span>' +
+    '<h1>'+p.name+'</h1><p class="spec">'+p.spec+'</p>';
+
+  if (p.tagline) right += '<div class="tagline">'+p.tagline+'</div>';
+
+  if (p.features) {
+    right += '<div class="block"><h4>产品特点</h4><ol>' +
+      p.features.map(function(f){ return '<li>'+f+'</li>'; }).join('') + '</ol></div>';
+  }
+  if (p.usage) {
+    right += '<div class="block"><h4>注药适期</h4><p>'+p.usage+'</p></div>';
+  }
+  if (p.packing) {
+    right += '<div class="block"><h4>规格</h4><div class="pack">'+p.packing+'</div></div>';
+  }
+  if (!p.features) {
+    right += '<div class="block"><div class="todo">本产品的详细说明（产品特点、使用方法、规格包装）正在完善中。' +
+      '如需产品说明书、登记证信息或报价，欢迎直接联系我们，技术人员将为您提供用药方案。</div></div>';
+  }
+
+  right += '<div class="detail-cta">' +
+    '<a class="btn btn-green" href="contact.html">咨询该产品</a>' +
+    '<a class="btn btn-ghost" style="border-color:var(--line);color:var(--body)" href="catalog.html#'+p.categoryId+'">返回'+p.category+'</a>' +
+  '</div>';
+
+  document.getElementById('body').innerHTML =
+    '<div class="detail">' +
+      '<figure class="detail-fig" style="margin:0"><img src="'+img+'" alt="'+p.name+'">' +
+      '<figcaption>企业画册 · '+p.category+'</figcaption></figure>' +
+      '<div>'+right+'</div>' +
+    '</div>';
+
+  var others = cat.items.filter(function(it){ return it.id !== p.id; }).slice(0, 9);
+  if (others.length) {
+    document.getElementById('sibling').innerHTML =
+      '<h4>同类产品 · '+p.category+'</h4>' +
+      '<div class="plist">' + others.map(productItemHtml).join('') + '</div>';
+  }
+}
+</script>
+</body>
+</html>

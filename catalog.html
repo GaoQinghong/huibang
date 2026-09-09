@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>产品目录 | 慧邦生物</title>
+<meta name="description" content="慧邦生物产品目录：注干剂、新登记产品、推荐产品、蜗螺害虫、高效杀虫、杀螨剂、杀线虫、组合产品、常规产品、除草剂、杀菌剂、生长调节剂。">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="catalog">
+<div id="site-nav"></div>
+
+<section class="page-hero"><div class="wrap">
+  <div class="en">Conterts</div>
+  <h1>产品目录</h1>
+  <p>共 <b id="total"></b> 款产品 · 12 个分类　点击任意条目即可查看该产品详情</p>
+</div></section>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">首页</a> / 产品目录</div>
+
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="搜索产品名称或有效成分，例如：甲维盐、到喜、悬浮剂…">
+  </div>
+  <div class="chips" id="chips"></div>
+
+  <div id="list"></div>
+</div>
+
+<section class="sec soft" style="margin-top:40px">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="en">Original Page</div>
+      <h2>画册目录原页</h2>
+      <div class="bar"></div>
+    </div>
+    <figure class="about-fig" style="margin:0 auto;max-width:760px">
+      <img src="assets/img/catalog.webp" alt="产品目录 · 公司画册第 3 页">
+      <figcaption>企业画册 · 目录页（Page 3）</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div id="site-foot"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+var total = CATALOG.reduce(function(s,c){return s+c.items.length;},0);
+document.getElementById('total').textContent = total;
+
+var activeCat = 'all';
+var keyword = '';
+
+document.getElementById('chips').innerHTML =
+  '<button class="chip on" data-cat="all">全部</button>' +
+  CATALOG.map(function(c){ return '<button class="chip" data-cat="'+c.id+'">'+c.name+'</button>'; }).join('');
+
+function render(){
+  var html = '', hits = 0;
+  CATALOG.forEach(function(cat){
+    if (activeCat !== 'all' && activeCat !== cat.id) return;
+    var items = cat.items.filter(function(it){
+      if (!keyword) return true;
+      return (it.name + it.spec + cat.name).toLowerCase().indexOf(keyword) > -1;
+    });
+    if (!items.length) return;
+    hits += items.length;
+    html += '<div class="catblock" id="'+cat.id+'">' +
+      '<h3><span class="no">'+cat.page+'</span>'+cat.name+'<span class="en">'+cat.en+'</span></h3>' +
+      '<div class="plist">' + items.map(productItemHtml).join('') + '</div>' +
+    '</div>';
+  });
+  document.getElementById('list').innerHTML = hits ? html :
+    '<div class="empty">没有找到匹配「'+keyword+'」的产品，换个关键词试试。</div>';
+}
+
+document.getElementById('chips').addEventListener('click', function(e){
+  var b = e.target.closest('.chip');
+  if (!b) return;
+  activeCat = b.getAttribute('data-cat');
+  [].forEach.call(this.querySelectorAll('.chip'), function(c){ c.classList.remove('on'); });
+  b.classList.add('on');
+  render();
+});
+
+document.getElementById('q').addEventListener('input', function(){
+  keyword = this.value.trim().toLowerCase();
+  render();
+});
+
+render();
+
+// 支持从首页分类卡片跳转定位 catalog.html#分类id
+if (location.hash) {
+  var el = document.getElementById(location.hash.slice(1));
+  if (el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
+}
+</script>
+</body>
+</html>
