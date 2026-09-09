@@ -16,6 +16,8 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+/* 吸顶导航高 68px，锚点定位时给标题留出空间 */
+section[id],div[id]{scroll-margin-top:84px}
 body{
   margin:0;color:var(--body);background:var(--bg);
   font:16px/1.85 "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;

@@ -93,6 +93,55 @@ function productItemHtml(item) {
 }
 
 /* ---------- 启动：先取后台内容，再渲染 ---------- */
+/* 当前页面是不是 file 指向的那一页（用于判断锚点是同页还是跨页） */
+function isCurrentPage(file) {
+  if (!file) return true;                       // 纯 "#xxx" 一定是同页
+  var here = location.pathname.replace(/\/+$/, '');
+  var last = here.slice(here.lastIndexOf('/') + 1);
+  if (!last) last = 'index.html';               // 根路径 "/" 就是首页
+  return last === file;
+}
+
+function scrollToId(id, smooth) {
+  var el = id && document.getElementById(id);
+  if (!el) return false;
+  el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+  return true;
+}
+
+/* 内容是异步渲染的，浏览器原生锚点跳转会落空，这里在渲染完成后补跳一次 */
+function honorHash() {
+  var id = decodeURIComponent((location.hash || '').slice(1));
+  if (!id) return;
+  if (!scrollToId(id, false)) {
+    // 图片撑开布局后位置会变，稍后再校正一次
+    setTimeout(function () { scrollToId(id, false); }, 300);
+  }
+}
+
+/* 同页锚点用平滑滚动，避免整页重载 */
+function bindAnchors() {
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('#') < 0 || /^https?:/i.test(href)) return;
+    var parts = href.split('#');
+    var id = parts[1];
+    if (!id || !isCurrentPage(parts[0])) return;   // 跨页锚点交给浏览器正常跳转
+    if (!document.getElementById(id)) return;
+    e.preventDefault();
+    var menu = document.getElementById('menu');
+    if (menu) menu.classList.remove('open');
+    if (history.replaceState) history.replaceState(null, '', '#' + id);
+    else location.hash = id;
+    scrollToId(id, true);
+  });
+  window.addEventListener('hashchange', function () {
+    scrollToId(decodeURIComponent((location.hash || '').slice(1)), true);
+  });
+}
+
 function boot() {
   if (_booted) return;
   _booted = true;
@@ -102,6 +151,8 @@ function boot() {
     try { fn(); } catch (e) { if (window.console) console.error('页面渲染出错', e); }
   });
   _readyQueue = [];
+  bindAnchors();
+  honorHash();
 }
 
 (function () {
