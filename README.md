@@ -1,5 +1,8 @@
 # 慧邦生物 · 企业官网
 
+> 📌 **接手/续做请先看 [PROGRESS.md](PROGRESS.md)** —— 线上地址、当前进展、待办事项、踩过的坑都在那里。
+
+
 巨野县韦恩生物科技有限公司 / 山东慧邦生物科技有限公司 的静态展示网站，托管于 GitHub Pages。
 
 ## 页面
@@ -14,7 +17,9 @@
 
 ## 如何维护内容
 
-全部产品数据集中在 **`assets/js/data.js`**，改这一个文件即可，页面会自动更新：
+**日常改内容请用管理后台** https://huibang-13v.pages.dev/admin.html —— 不需要改代码。
+
+`assets/js/data.js` 只是"出厂默认内容"，在后台不可用时兜底。其结构（`DEFAULT_SITE`）为：
 
 - `COMPANY` — 公司名称、地址、**电话、邮箱**（目前为空，请填写）
 - `CERTS` — 公司证件 / 新登记证件清单
@@ -54,11 +59,19 @@ python3 -m http.server 8000
 
 ## 部署
 
-推送到 `main` 分支后，GitHub Pages 自动发布（Settings → Pages → Branch: main / root）。
-`.nojekyll` 用于跳过 Jekyll 处理。
+推送到 `main` 后 **Cloudflare Pages 自动部署**（约 1 分钟）→ https://huibang-13v.pages.dev/
+
+后台所需的 KV 绑定与环境变量见 [DEPLOY.md](DEPLOY.md)。
+
+GitHub Pages 上的旧地址 https://gaoqinghong.github.io/huibang/ 仍可访问，
+但没有后台（`/api/*` 不存在），前台会自动回退到默认内容。
+
+## 测试
+
+```bash
+npm install && npm test    # 73 项：API 23 + 后台增删改 34 + 前后台打通 16
+```
 
 ## 待补充
 
-- 公司联系电话、邮箱（`data.js` 中的 `COMPANY`）
-- 画册第 7 页之后的产品详情内容
-- 目录中的产品名称由画册图片识别录入，建议按原稿核对一遍
+见 [PROGRESS.md](PROGRESS.md) 的「待办」一节。

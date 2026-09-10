@@ -1,0 +1,16 @@
+{
+  "name": "huibang-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "慧邦生物企业官网（静态站 + Cloudflare Pages Functions 后台）",
+  "scripts": {
+    "test": "node tests/api.test.mjs && node tests/admin-ui.test.js && node tests/e2e.test.js",
+    "test:api": "node tests/api.test.mjs",
+    "test:admin": "node tests/admin-ui.test.js",
+    "test:e2e": "node tests/e2e.test.js",
+    "dev": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}
